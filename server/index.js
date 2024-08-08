@@ -34,7 +34,7 @@ app.get('/', (req, res) => {
 
 app.use('/api/auth', authRouter);
 app.use('/api/task', taskRouter);
-app.use('/api/users', userRouter);
+app.use('/api/user', userRouter);
 
 app.listen(port, () => {
   connect();
