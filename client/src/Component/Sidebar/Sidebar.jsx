@@ -1,18 +1,20 @@
 import { useState, useEffect } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { useContext } from "react";
 
 import { Context } from "../../App.jsx";
 import { AiFillHome, AiFillProfile, AiOutlineMenuUnfold } from "react-icons/ai";
 import { RiFileList2Fill } from "react-icons/ri";
 import { BsClipboard2CheckFill, BsArrowLeft } from "react-icons/bs";
-import { MoonFilled, SunFilled } from "@ant-design/icons";
-import { Switch, Popover } from "antd";
+import { MoonFilled, SunFilled, UserOutlined } from "@ant-design/icons";
+import { Switch, Popover, Avatar } from "antd";
 import Tippy from "@tippyjs/react";
+import { getProfile, logout } from "../../authService/authService.js";
+
 const navs = [
   {
     icon: <AiFillHome />,
-    display: "Trang Chủ",
+    display: "Toàn bộ",
     path: "/home",
   },
   {
@@ -35,6 +37,30 @@ const Sidebar = ({ setIsModalOpen }) => {
   const { isDarkMode, setIsDarkMode } = useContext(Context);
   const [collapse, setCollapse] = useState(false);
   const [openPopover, setOpenPopover] = useState(false);
+  const [userInfo, setUserInfo] = useState(null);
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const response = await getProfile();
+        setUserInfo(response.data);
+      } catch (error) {
+        setError("Error fetching user info");
+        console.error("Error fetching user info", error);
+      }
+    };
+
+    fetchUserData();
+  }, []);
+
+  const handleLogout = () => {
+    logout();
+    setUserInfo(null);
+    navigate("/login");
+  };
+
   const handleChange = (checked) => {
     setIsDarkMode(checked);
   };
@@ -51,9 +77,7 @@ const Sidebar = ({ setIsModalOpen }) => {
   }, [isDarkMode]);
 
   const handleSideBar = () => {
-    setTimeout(() => {
-      setCollapse((prev) => !prev);
-    }, 100);
+    setCollapse((prev) => !prev);
   };
   const handleOpenChange = (newOpen) => {
     setOpenPopover(newOpen);
@@ -61,18 +85,19 @@ const Sidebar = ({ setIsModalOpen }) => {
   const contentPopover = (
     <div className="px-4 py-3">
       <div className="flex items-center gap-4 pb-6 border-b border-defaultBorder dark:border-defaultBorderDark">
-        <figure className="w-[46px] h-[46px] rounded-full border border-solid border-defaultBorder flex items-center justify-center overflow-hidden cursor-pointer">
-          <img
-            className="w-full h-full rounded-full object-cover"
-            src="https://img.freepik.com/free-vector/businessman-character-avatar-isolated_24877-60111.jpg"
-          />
-        </figure>
+        <div>
+          {userInfo?.avatar ? (
+            <Avatar size={48} src={userInfo?.avatar} />
+          ) : (
+            <Avatar size={48} icon={<UserOutlined />} />
+          )}
+        </div>
         <div>
           <h2 className="font-medium dark:text-textDark text-[1rem]">
-            Truong Van Vuong
+            {userInfo?.fullname}
           </h2>
           <h3 className="font-normal dark:text-textDark text-secondaryText text-[0.9rem]">
-            VanVuong
+            {userInfo?.username ? `@${userInfo.username}` : "Tên người dùng"}
           </h3>
         </div>
       </div>
@@ -83,15 +108,22 @@ const Sidebar = ({ setIsModalOpen }) => {
         >
           Thiết lập tài khoản
         </span>
-        <span className="hover:opacity-80 cursor-pointer">Đăng xuất</span>
+        <span
+          className="hover:opacity-80 cursor-pointer"
+          onClick={handleLogout}
+        >
+          Đăng xuất
+        </span>
       </div>
     </div>
   );
   return (
     <aside className="border border-defaultBorder dark:border-defaultBorderDark dark:bg-gray rounded-xl shadow-lg">
       <div
-        className={`my-4 h-[calc(100%-2rem)] flex flex-col justify-between w-[220px] transition-all duration-500 ${
-          collapse && "sideBar-collapse"
+        className={`my-4 h-[calc(100%-2rem)] flex flex-shrink-0 flex-grow-0 flex-col justify-between transition-all duration-200 ${
+          collapse
+            ? "w-[80px] min-w-[80px] max-w-[80px] basis-[80px]"
+            : "w-[220px] min-w-[220px] max-w-[220px] basis-[220px]"
         }`}
       >
         <div className="flex gap-4 px-6 items-center relative">
@@ -103,16 +135,27 @@ const Sidebar = ({ setIsModalOpen }) => {
             arrow={false}
             onOpenChange={handleOpenChange}
           >
-            <figure className="w-[46px] h-[46px] rounded-full border border-solid transition-all duration-500 border-defaultBorder flex items-center justify-center overflow-hidden cursor-pointer">
-              <img
-                className="w-full h-full rounded-full object-cover"
-                src="https://img.freepik.com/free-vector/businessman-character-avatar-isolated_24877-60111.jpg"
-              />
-            </figure>
+            <div className="cursor-pointer">
+              {userInfo?.avatar ? (
+                <Avatar
+                  className="transition-all duration-300"
+                  size={collapse ? 36 : 48}
+                  src={userInfo?.avatar}
+                />
+              ) : (
+                <Avatar
+                  className="transition-all duration-300"
+                  size={collapse ? 36 : 48}
+                  icon={<UserOutlined />}
+                />
+              )}
+            </div>
           </Popover>
-          <h2 className="text-[1rem] dark:text-textDark font-medium name">
-            VanVuong
-          </h2>
+          {!collapse && (
+            <h2 className="user-name text-[1rem] dark:text-textDark font-medium">
+              {userInfo?.fullname}
+            </h2>
+          )}
           <Tippy
             placement="right"
             content={collapse ? "Mở rộng" : "Thu gọn"}
@@ -131,7 +174,7 @@ const Sidebar = ({ setIsModalOpen }) => {
           </Tippy>
         </div>
         <div>
-          <ul>
+          <ul className="w-auto">
             {navs.map((item, index) => {
               return (
                 <li key={index}>
@@ -145,16 +188,20 @@ const Sidebar = ({ setIsModalOpen }) => {
                       to={item.path}
                       className={(navClass) =>
                         navClass.isActive
-                          ? "bg-separator dark:bg-defaultBorderDark flex items-center gap-3 px-6 py-2 border-r-4 border-primaryColor transition-all duration-[400ms]"
-                          : "hover:bg-layoutBackground dark:hover:bg-separatorDark flex items-center gap-3 px-6 py-2 border-r-4 border-transparent"
+                          ? "bg-separator dark:bg-defaultBorderDark flex items-center gap-3 px-6 h-9 border-r-4 border-primaryColor transition-all duration-[400ms]"
+                          : "hover:bg-layoutBackground dark:hover:bg-separatorDark flex items-center h-9 gap-3 px-6 border-r-4 border-transparent"
                       }
                     >
-                      <span className="icon dark:text-textDark text-[1.1rem] text-secondaryText">
+                      <span className="dark:text-textDark text-[1rem] text-secondaryText">
                         {item.icon}
                       </span>
-                      <span className="dark:text-textDark text-[0.95rem] font-medium text-secondaryText w-max icon-name animate__animated animate__fadeIn">
-                        {item.display}
-                      </span>
+                      {!collapse && (
+                        <span
+                          className={`dark:text-textDark text-[1rem] font-mediumdi text-secondaryText w-max transition-none`}
+                        >
+                          {item.display}
+                        </span>
+                      )}
                     </NavLink>
                   </Tippy>
                 </li>

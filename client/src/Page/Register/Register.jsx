@@ -1,14 +1,21 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+
 import { AuthForm, Input } from "../../Component";
 import validateEmail from "../../Utils/ValidateEmail.js";
-
+import message from "../../Utils/message.js";
+import { register } from "../../authService/authService.js";
 import registerImg from "../../assets/image/img-register.svg";
 
 const Register = () => {
+  const navigate = useNavigate();
+
   const [credentials, setCredentials] = useState({
-    name: null,
-    email: null,
-    password: null,
+    username: "",
+    fullName: "",
+    email: "",
+    password: "",
+    avatarUrl: "",
   });
   const [errors, setErrors] = useState(credentials);
 
@@ -19,10 +26,10 @@ const Register = () => {
       setErrors((prev) => ({ ...prev, [e.target.name]: false }));
     }
   };
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const newErrors = {
-      name: !credentials.name ? "Vui lòng nhập họ và tên" : null,
+      fullName: !credentials.fullName ? "Vui lòng nhập họ và tên" : null,
       email: !credentials.email
         ? "Vui lòng nhập email"
         : !isEmail
@@ -38,7 +45,17 @@ const Register = () => {
     setErrors(newErrors);
     const hasError = Object.values(newErrors).some(Boolean);
     if (!hasError) {
-      console.log(credentials);
+      try {
+        const response = await register(credentials);
+        if (response.success) {
+          navigate("/login");
+          message("success", response.message);
+        }
+      } catch (error) {
+        const { data } = error.response;
+        message("error", data.message);
+        console.log(error);
+      }
     }
   };
 
@@ -54,11 +71,11 @@ const Register = () => {
       >
         <Input
           type="text"
-          name="name"
+          name="fullName"
           bordered
           placeholder="Họ và tên"
           onChange={handleOnChange}
-          messError={errors.name}
+          messError={errors.fullName}
         />
         <Input
           type="email"
@@ -69,6 +86,7 @@ const Register = () => {
           messError={errors.email}
         />
         <Input
+          passWord
           type="password"
           name="password"
           placeholder="Nhập mật khẩu"

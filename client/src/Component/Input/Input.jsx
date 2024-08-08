@@ -24,7 +24,7 @@ const Input = ({
     ...passProps,
   };
   return (
-    <div className={`w-full py-4 flex flex-col gap-2 ${wrapInputClassName}`}>
+    <div className={`w-full flex flex-col gap-2 ${wrapInputClassName}`}>
       <div className="flex items-center">
         <input
           ref={inputRef}

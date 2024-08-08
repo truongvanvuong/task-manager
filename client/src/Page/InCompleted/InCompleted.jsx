@@ -7,7 +7,7 @@ const InCompleted = () => {
   const { data, loading, error, refresh } = useFetch(url);
   return (
     <div>
-      <TitlePage title="chưa hoàn thành" />
+      <TitlePage title="Chưa hoàn thành" />
 
       <div>
         <ListCard dataTask={data} refreshData={() => refresh()} />

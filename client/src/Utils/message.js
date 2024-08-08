@@ -4,7 +4,7 @@ const message = (type, content) => {
     className: "text-white text-[0.85rem] md:text-[1rem] font-medium",
     type: type,
     content: content,
-    duration: 2,
+    duration: 2.5,
   });
 };
 export default message;

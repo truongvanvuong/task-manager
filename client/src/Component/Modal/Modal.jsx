@@ -75,12 +75,12 @@ const Modal = ({ open, setOpen, titleModal, mode, taskData, refreshData }) => {
           setTimeout(() => {
             setConfirmLoading(false);
             setOpen(false);
-          }, 1000);
+          }, 800);
 
           setTimeout(() => {
             refreshData();
             message("success", "Đã thêm công việc mới");
-          }, 1300);
+          }, 1000);
 
           if (mode === "add") {
             setFormData({
@@ -88,7 +88,7 @@ const Modal = ({ open, setOpen, titleModal, mode, taskData, refreshData }) => {
               description: "",
               date: currentDate,
               important: false,
-              completed: true,
+              completed: false,
             });
           }
         }
@@ -105,7 +105,7 @@ const Modal = ({ open, setOpen, titleModal, mode, taskData, refreshData }) => {
       description: "",
       date: currentDate,
       important: false,
-      completed: true,
+      completed: false,
     });
   };
   return (
@@ -133,7 +133,6 @@ const Modal = ({ open, setOpen, titleModal, mode, taskData, refreshData }) => {
             maxLength="40"
             id="title"
             type="text"
-            wrapInputClassName="!py-0"
             placeholder="Nhập tiêu đề khoảng 60 từ..."
             name="title"
             value={formData.title}

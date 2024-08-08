@@ -55,7 +55,12 @@ const AuthForm = ({
                 {title}
               </h2>
               <div>
-                <form onSubmit={handleSubmit}>{children}</form>
+                <form
+                  onSubmit={handleSubmit}
+                  className="gap flex flex-col gap-6"
+                >
+                  {children}
+                </form>
                 <div className="mt-8">
                   <Button
                     large

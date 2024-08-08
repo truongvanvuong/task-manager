@@ -24,7 +24,7 @@ const ListCard = ({ dataTask, refreshData }) => {
         <Col span={6} lg={6} md={8} sm={12} xs={24}>
           <CardAntd
             onClick={handleOpenModal}
-            className="dark:bg-[#333333] w-full h-full min-h-[260px] flex items-center justify-center hover:bg-[#fafafa] cursor-pointer dark:hover:bg-defaultBorderDark"
+            className="dark:bg-[#333333] w-full h-full min-h-[200px] flex items-center justify-center hover:bg-[#fafafa] cursor-pointer dark:hover:bg-defaultBorderDark"
             bordered
           >
             <div className="flex items-center gap-3">

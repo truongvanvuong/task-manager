@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 import { useContext, useState } from "react";
 
 import { Card as CardAntd, Popconfirm } from "antd";
-import { AiFillDelete, AiFillEdit } from "react-icons/ai";
+import { DeleteFilled, EditFilled, QuestionOutlined } from "@ant-design/icons";
 import axios from "axios";
 import dayjs from "dayjs";
 import Tippy from "@tippyjs/react";
@@ -25,8 +25,10 @@ const Card = ({ item, refreshData }) => {
       const { data } = response;
 
       if (data.success) {
-        message("success", "Công việc đã được xóa");
-        refreshData();
+        setTimeout(() => {
+          message("success", "Công việc đã được xóa");
+          refreshData();
+        }, 500);
       }
     } catch (error) {
       message("error", "Công việc chưa được xóa");
@@ -46,6 +48,7 @@ const Card = ({ item, refreshData }) => {
       console.log(error);
     }
   };
+
   const handleStatus = async (id, completed) => {
     try {
       const response = await axios.put(`${url}/${id}`, {
@@ -61,6 +64,7 @@ const Card = ({ item, refreshData }) => {
       console.log(err);
     }
   };
+
   return (
     <div>
       <CardAntd
@@ -99,9 +103,8 @@ const Card = ({ item, refreshData }) => {
                   className="dark:border dark:border-defaultBorderDark"
                   theme={isDarkMode ? "light" : "dark"}
                 >
-                  <div>
-                    <AiFillEdit
-                      onClick={() => handleEditTask(item._id)}
+                  <div onClick={() => handleEditTask(item._id)}>
+                    <EditFilled
                       className={`${
                         !isDarkMode && "text-secondaryText"
                       } cursor-pointer hover:opacity-85 transition-opacity`}
@@ -114,12 +117,24 @@ const Card = ({ item, refreshData }) => {
                   theme={isDarkMode ? "light" : "dark"}
                   className="dark:border dark:border-defaultBorderDark"
                 >
-                  <div onClick={() => handleDelete(item._id)}>
-                    <AiFillDelete
-                      className={`${
-                        !isDarkMode && "text-secondaryText"
-                      } cursor-pointer hover:opacity-85 transition-opacity`}
-                    />
+                  <div>
+                    <Popconfirm
+                      icon={<QuestionOutlined />}
+                      title="Xác nhận xóa"
+                      placement="topRight"
+                      description="Bạn chắc chắn xóa không?"
+                      onConfirm={() => handleDelete(item._id)}
+                      okText="OK"
+                      cancelText="Hủy"
+                    >
+                      <div>
+                        <DeleteFilled
+                          className={`${
+                            !isDarkMode && "text-secondaryText"
+                          } cursor-pointer hover:opacity-85 transition-opacity`}
+                        />
+                      </div>
+                    </Popconfirm>
                   </div>
                 </Tippy>
               </div>

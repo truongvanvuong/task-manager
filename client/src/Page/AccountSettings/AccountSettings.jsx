@@ -1,19 +1,55 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import PropTypes from "prop-types";
+import axios from "axios";
+
 import { Avatar, Upload, Modal, Tooltip } from "antd";
-import { EditOutlined, CameraOutlined, RightOutlined } from "@ant-design/icons";
+import {
+  EditOutlined,
+  CameraOutlined,
+  RightOutlined,
+  UserOutlined,
+} from "@ant-design/icons";
+
+import { BASE_URL } from "../../config.js";
 import { Input, Button } from "../../Component";
+import message from "../../Utils/message.js";
+import { getProfile } from "../../authService/authService.js";
+
 const AccountSettings = ({ isModalOpen, setIsModalOpen }) => {
+  const url = BASE_URL + "/user";
+
+  const [userInfo, setUserInfo] = useState({});
+  const [userData, setUserData] = useState({});
   const [editFields, setEditField] = useState({
     fullName: false,
     userName: false,
     email: false,
+    oldPassword: false,
+    newPassword: false,
   });
   const [ShowChangePassword, setShowChangePassword] = useState(false);
+  const [oldPassword, setOldPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
   const fullNameRef = useRef();
   const userNameRef = useRef();
   const emailRef = useRef();
 
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const response = await getProfile();
+        setUserInfo(response.data);
+        setUserData(response.data);
+      } catch (error) {
+        setError("Error fetching user info");
+        console.error("Error fetching user info", error);
+      }
+    };
+
+    fetchUserData();
+  }, []);
+
+  console.log("re-render");
   const handleEdit = (field) => {
     setEditField((prevEditField) => ({
       ...prevEditField,
@@ -34,9 +70,34 @@ const AccountSettings = ({ isModalOpen, setIsModalOpen }) => {
     }
   };
 
-  const onSave = () => {};
+  const handleOnChangeInput = (e) => {
+    setUserData((prev) => ({ ...prev, [e.target.id]: e.target.value }));
+  };
+
+  const onSave = async (field) => {
+    const user = JSON.parse(localStorage.getItem("user"));
+    try {
+      const { data } = await axios.put(`${url}/${userData._id}`, userData, {
+        headers: {
+          Authorization: `Bearer ${user.token}`, // Thêm token vào header
+        },
+      });
+      if (data.success) {
+        message("success", data.message);
+        setEditField((prevEditField) => ({
+          ...prevEditField,
+          [field]: false,
+        }));
+      }
+    } catch (error) {
+      const { data } = error.response;
+      message("error", data.message);
+      console.log(error);
+    }
+  };
 
   const onCancel = (field) => {
+    setUserData(userInfo);
     setEditField((prevEditField) => ({
       ...prevEditField,
       [field]: false,
@@ -56,13 +117,53 @@ const AccountSettings = ({ isModalOpen, setIsModalOpen }) => {
     });
     setShowChangePassword(false);
     setIsModalOpen(!isModalOpen);
+    setNewPassword("");
+    setOldPassword("");
   };
+  const handleChangePassword = async () => {
+    if (oldPassword && newPassword >= 6) {
+      const user = JSON.parse(localStorage.getItem("user"));
+      try {
+        const response = await axios.put(
+          `${url}/change-password`,
+          {
+            oldPassword,
+            newPassword,
+          },
+          {
+            headers: { Authorization: `Bearer ${user.token}` },
+          }
+        );
+        console.log(response.status);
+
+        message("success", response.data.message);
+      } catch (err) {
+        const { data, status } = err.response;
+
+        if (status == 400) {
+          setEditField((prev) => ({
+            ...prev,
+            oldPassword: data.message,
+          }));
+        } else {
+          message("error", data.message);
+        }
+      }
+    } else {
+      setEditField((prev) => ({
+        ...prev,
+        oldPassword: !oldPassword ? "Nhập mật khẩu cũ" : false,
+        newPassword: !newPassword ? "Nhập mật khẩu mới" : false,
+      }));
+    }
+  };
+
   return (
     <Modal
       centered
       width={1000}
-      open={isModalOpen}
       footer={false}
+      open={isModalOpen}
       onCancel={handleOnCancelModal}
     >
       <div className="mt-4 flex gap-20">
@@ -76,20 +177,25 @@ const AccountSettings = ({ isModalOpen, setIsModalOpen }) => {
             onChange={handleUploadOnchange}
           >
             <div className="relative cursor-pointer">
-              <Avatar
-                className=""
-                size={200}
-                alt="name"
-                src="https://img.freepik.com/free-vector/businessman-character-avatar-isolated_24877-60111.jpg"
-              />
+              {userData?.avatar ? (
+                <Avatar
+                  size={200}
+                  alt={userData?.fullname}
+                  src={userData?.avatar}
+                />
+              ) : (
+                <Avatar size={200} icon={<UserOutlined />} />
+              )}
               <div className="flex justify-center items-center absolute top-0 left-0 w-full h-full rounded-[50%] bg-[rgba(0,0,0,0.08)] opacity-0 hover:opacity-100 transition-opacity">
                 <CameraOutlined className="text-[2.2rem] text-[#0000008a]" />
               </div>
             </div>
           </Upload>
           <div className="mt-4 text-center text-[1.1rem]">
-            <h4 className="font-medium">Trương Văn Vượng</h4>
-            <p className="font-normal">@vanvuong</p>
+            <h4 className="font-medium">{userData?.fullname}</h4>
+            <p className="font-normal">
+              @{userData?.username ? userData.username : "Chưa thiết lập"}
+            </p>
           </div>
         </div>
         <div className="w-[60%] px-3">
@@ -104,11 +210,12 @@ const AccountSettings = ({ isModalOpen, setIsModalOpen }) => {
               <div className="flex-1 max-w-[500px]">
                 <Input
                   inputRef={fullNameRef}
-                  wrapInputClassName="!py-0"
                   inputClassName="text-[1rem]"
                   type="text"
                   id="fullname"
-                  value="vanvuong"
+                  onChange={handleOnChangeInput}
+                  placeholder="Chưa thiết lập"
+                  value={userData?.fullname}
                   bordered={editFields.fullName}
                   readOnly={!editFields.fullName}
                 />
@@ -117,7 +224,7 @@ const AccountSettings = ({ isModalOpen, setIsModalOpen }) => {
                 {editFields.fullName ? (
                   <div className="flex items-center gap-3 animate__animated animate__fadeIn">
                     <Button
-                      onClick={onSave}
+                      onClick={() => onSave("fullName")}
                       outline
                       small
                       roundedBorder
@@ -155,11 +262,12 @@ const AccountSettings = ({ isModalOpen, setIsModalOpen }) => {
                 <Input
                   inputRef={userNameRef}
                   type="text"
-                  wrapInputClassName="!py-0"
                   inputClassName="text-[1rem]"
                   bordered={editFields.userName}
+                  onChange={handleOnChangeInput}
                   id="username"
-                  value="vanvuong"
+                  value={userData?.username}
+                  placeholder="Chưa thiết lập"
                   readOnly={!editFields.userName}
                 />
               </div>
@@ -167,7 +275,7 @@ const AccountSettings = ({ isModalOpen, setIsModalOpen }) => {
                 {editFields.userName ? (
                   <div className="flex items-center gap-3 animate__animated animate__fadeIn">
                     <Button
-                      onClick={onSave}
+                      onClick={() => onSave("userName")}
                       outline
                       small
                       roundedBorder
@@ -204,12 +312,13 @@ const AccountSettings = ({ isModalOpen, setIsModalOpen }) => {
               <div className="flex-1 max-w-[500px]">
                 <Input
                   inputRef={emailRef}
+                  onChange={handleOnChangeInput}
                   type="Email"
                   bordered={editFields.email}
-                  wrapInputClassName="!py-0"
                   inputClassName="text-[1rem]"
                   id="email"
-                  value="vanvuong"
+                  placeholder="Chưa thiết lập"
+                  value={userData?.email}
                   readOnly={!editFields.email}
                 />
               </div>
@@ -217,7 +326,7 @@ const AccountSettings = ({ isModalOpen, setIsModalOpen }) => {
                 {editFields.email ? (
                   <div className="flex items-center gap-3 animate__animated animate__fadeIn">
                     <Button
-                      onClick={onSave}
+                      onClick={() => onSave("email")}
                       outline
                       small
                       roundedBorder
@@ -276,9 +385,18 @@ const AccountSettings = ({ isModalOpen, setIsModalOpen }) => {
                     passWord
                     type="password"
                     bordered
+                    value={oldPassword}
+                    onChange={(e) => {
+                      setOldPassword(e.target.value);
+                      setEditField((prev) => ({
+                        ...prev,
+                        oldPassword: false,
+                      }));
+                    }}
                     wrapInputClassName="!py-0"
                     inputClassName="text-[1rem]"
                     id="oldPassword"
+                    messError={editFields.oldPassword}
                   />
                 </div>
                 <div>
@@ -292,9 +410,21 @@ const AccountSettings = ({ isModalOpen, setIsModalOpen }) => {
                     passWord
                     type="password"
                     bordered
+                    value={newPassword}
+                    onChange={(e) => {
+                      setNewPassword(e.target.value);
+                      setEditField((prev) => ({
+                        ...prev,
+                        newPassword:
+                          e.target.value.length < 6
+                            ? "Độ dài mật khẩu từ 6 ký tự trở lên"
+                            : false,
+                      }));
+                    }}
                     wrapInputClassName="!py-0"
                     inputClassName="text-[1rem]"
                     id="newPassword"
+                    messError={editFields.newPassword}
                   />
                 </div>
                 <div>
@@ -302,6 +432,7 @@ const AccountSettings = ({ isModalOpen, setIsModalOpen }) => {
                     medium
                     primary
                     className="hover:brightness-110 transition-all float-right"
+                    onClick={handleChangePassword}
                   >
                     Lưu
                   </Button>
