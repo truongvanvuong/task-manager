@@ -1,95 +1,122 @@
 * {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
 :root {
-  --primary-color: #fa8c16;
+    --primary-color: #fa8c16;
 }
-input[type="password"]::-ms-reveal {
-  display: none;
+input[type='password']::-ms-reveal {
+    display: none;
 }
 html {
-  scroll-behavior: smooth;
+    scroll-behavior: smooth;
+}
+html *::-webkit-scrollbar {
+    border-radius: 0;
+    width: 8px;
+}
+
+html *::-webkit-scrollbar-thumb {
+    border-radius: 4px;
+    background-color: rgba(22, 24, 35, 0.06);
+}
+
+html *::-webkit-scrollbar-track {
+    border-radius: 0;
+    background-color: rgba(0, 0, 0, 0);
 }
 body {
-  @apply text-base dark:text-textDark;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-    "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji",
-    "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-  font-optical-sizing: auto;
-  font-style: normal;
+    @apply text-base dark:text-textDark;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif,
+        'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+    font-optical-sizing: auto;
+    font-style: normal;
 }
 
+.transition-sidebar {
+    transition: all 0.2s ease-out;
+}
 /* CSS */
 .primary {
-  @apply bg-primaryColor border rounded-md shadow-[rgba(0,0,0,0.1)_0_2px_4px_0] box-border text-white cursor-pointer font-normal text-center transition-shadow duration-[300ms] select-none touch-manipulation border-solid border-primaryColor;
-  outline: none;
-  outline: 0;
-  -webkit-user-select: none;
+    @apply bg-primaryColor border rounded-md shadow-[rgba(0,0,0,0.1)_0_2px_4px_0] box-border text-white cursor-pointer font-normal text-center transition-shadow duration-[200ms] select-none touch-manipulation border-solid border-primaryColor;
+    outline: none;
+    outline: 0;
+    -webkit-user-select: none;
 }
 .primary:hover {
-  @apply shadow-[rgba(0,0,0,0.15)_0_3px_9px_0];
+    @apply shadow-[rgba(0,0,0,0.15)_0_3px_9px_0] opacity-85 transition-opacity;
 }
 .medium {
-  @apply px-[12px] py-2 text-base;
+    @apply px-[12px] py-2 text-base;
 }
 .small {
-  @apply px-[10px] py-1.5 text-sm;
+    @apply px-[10px] py-1.5 text-sm;
 }
 .large {
-  @apply px-[40px] py-2 text-base;
+    @apply px-[40px] py-2 text-base;
 }
 .disabled {
-  @apply bg-[rgba(51,51,51,0.05)] text-[#333333] !rounded box-border cursor-text select-none touch-manipulation;
-  list-style: none;
-  -webkit-user-select: none;
+    @apply bg-[rgba(51,51,51,0.05)] text-[#333333] !rounded box-border cursor-text select-none touch-manipulation;
+    list-style: none;
+    -webkit-user-select: none;
 }
 .roundedBorder {
-  @apply box-border text-white cursor-pointer opacity-100 select-none touch-manipulation w-fit !rounded-full border-0;
-  outline: 0 solid transparent;
-  -webkit-user-select: none;
-  word-break: break-word;
+    @apply box-border text-white cursor-pointer opacity-100 select-none touch-manipulation w-fit !rounded-full border-0;
+    outline: 0 solid transparent;
+    -webkit-user-select: none;
+    word-break: break-word;
 }
 .outline {
-  @apply border border-defaultBorder outline-none rounded-md dark:border-defaultBorderDark dark:text-textDark transition-all duration-[400ms];
+    @apply border border-defaultBorder outline-none rounded-md dark:border-defaultBorderDark dark:text-textDark transition-all duration-[200ms];
 }
 .gradien {
-  background: linear-gradient(
-    75deg,
-    rgba(240, 222, 202, 1) 31%,
-    rgba(240, 178, 112, 1) 100%
-  );
+    background: linear-gradient(75deg, rgba(240, 222, 202, 1) 31%, rgba(240, 178, 112, 1) 100%);
 }
 .left {
-  transform: translateX(0);
+    transform: translateX(0);
 }
 .left figure {
-  transform: translateX(16%) rotate(-3deg);
+    transform: translateX(16%) rotate(-3deg);
 }
 .right {
-  border-radius: 40px 0 0 40px;
-  transform: translateX(0);
+    border-radius: 40px 0 0 40px;
+    transform: translateX(0);
 }
 .reverse .left {
-  transform: translateX(166%);
+    transform: translateX(166%);
 }
 .reverse .left figure {
-  transform: translateX(-14%) rotate(0deg);
-  margin-bottom: 30px;
+    transform: translateX(-14%) rotate(0deg);
+    margin-bottom: 30px;
 }
 .reverse .right {
-  border-radius: 0 40px 40px 0;
-  transform: translateX(-60%);
+    border-radius: 0 40px 40px 0;
+    transform: translateX(-60%);
 }
-
+.overflow-overlay {
+    overflow-y: overlay;
+}
 /* antd css */
 
 .ant-message .ant-message-notice-wrapper .ant-message-notice-content {
-  @apply py-[8px] px-3 md:py-3 md:px-4  bg-[rgba(0,0,0,0.65)] rounded-full shadow-md;
+    @apply py-[8px] px-3 md:py-3 md:px-4 bg-[rgba(0,0,0,0.65)] rounded-full shadow-md;
 }
 
 .ant-col > div {
-  height: 100%;
+    height: 100%;
+}
+/* tablet & mobile */
+@media (max-width: 1024px) {
+    .wrap-sidebar {
+        @apply fixed -translate-x-full top-0 left-0 bottom-0 z-[100] bg-white transition-transform duration-300;
+    }
+}
+/* Tablet */
+
+@media (min-width: 46.25em) and (max-width: 63.9375em) {
+}
+/* Mobile */
+@media (max-width: 46.1875em) {
 }
