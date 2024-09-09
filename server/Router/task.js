@@ -1,4 +1,5 @@
 import express from 'express';
+import authenticationToken from '../Auth/vetifyToken.js';
 import {
   createTask,
   getTask,
@@ -12,12 +13,12 @@ import {
 
 const router = express.Router();
 
-router.get('/', getAllTask);
-router.get('/completeds', getTaskCompleteds);
-router.get('/importants', getTaskImportants);
-router.get('/incompletes', getTaskIncompletes);
-router.get('/:id', getTask);
-router.post('/', createTask);
-router.put('/:id', updateTask);
-router.delete('/:id', deleteTask);
+router.get('/', authenticationToken, getAllTask);
+router.get('/completeds', authenticationToken, getTaskCompleteds);
+router.get('/importants', authenticationToken, getTaskImportants);
+router.get('/incompletes', authenticationToken, getTaskIncompletes);
+router.get('/:id', authenticationToken, getTask);
+router.post('/', authenticationToken, createTask);
+router.put('/:id', authenticationToken, updateTask);
+router.delete('/:id', authenticationToken, deleteTask);
 export default router;

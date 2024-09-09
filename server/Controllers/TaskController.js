@@ -1,8 +1,8 @@
 import Task from '../Models/Task.js';
 
 const createTask = async (req, res) => {
-  const newTask = new Task(req.body);
-
+  const userId = req.user.id;
+  const newTask = new Task({ ...req.body, userId: userId });
   try {
     const savedTask = await newTask.save();
     res.status(200).json({
@@ -18,9 +18,10 @@ const createTask = async (req, res) => {
 };
 
 const getTask = async (req, res) => {
+  const userId = req.user.id;
   const id = req.params.id;
   try {
-    const task = await Task.findById(id);
+    const task = await Task.findById({ _id: id, userId: userId });
     res.status(200).json({
       success: true,
       data: task,
@@ -28,8 +29,10 @@ const getTask = async (req, res) => {
   } catch (err) {}
 };
 const getTaskCompleteds = async (req, res) => {
+  const userId = req.user.id;
+
   try {
-    const taskCompletes = await Task.find({ completed: true });
+    const taskCompletes = await Task.find({ completed: true, userId: userId });
     res.status(200).json({
       success: true,
       data: taskCompletes,
@@ -42,8 +45,10 @@ const getTaskCompleteds = async (req, res) => {
   }
 };
 const getTaskImportants = async (req, res) => {
+  const userId = req.user.id;
+
   try {
-    const taskImportants = await Task.find({ important: true });
+    const taskImportants = await Task.find({ important: true, userId: userId });
     res.status(200).json({
       success: true,
       data: taskImportants,
@@ -56,8 +61,10 @@ const getTaskImportants = async (req, res) => {
   }
 };
 const getTaskIncompletes = async (req, res) => {
+  const userId = req.user.id;
+
   try {
-    const taskIncompletes = await Task.find({ completed: false });
+    const taskIncompletes = await Task.find({ completed: false, userId });
     res.status(200).json({
       success: true,
       data: taskIncompletes,
@@ -70,8 +77,9 @@ const getTaskIncompletes = async (req, res) => {
   }
 };
 const getAllTask = async (req, res) => {
+  const userId = req.user.id;
   try {
-    const allTasks = await Task.find({});
+    const allTasks = await Task.find({ userId: userId });
     res.status(200).json({
       success: true,
       data: allTasks,
@@ -84,10 +92,12 @@ const getAllTask = async (req, res) => {
   }
 };
 const updateTask = async (req, res) => {
+  const userId = req.user.id;
+  const id = req.params.id;
+
   try {
-    const id = req.params.id;
     const updateTask = await Task.findByIdAndUpdate(
-      id,
+      { _id: id, userId: userId },
       { $set: req.body },
       { new: true }
     );
@@ -103,9 +113,10 @@ const updateTask = async (req, res) => {
   }
 };
 const deleteTask = async (req, res) => {
+  const userId = req.user.id;
   const id = req.params.id;
   try {
-    await Task.findByIdAndDelete(id);
+    await Task.findByIdAndDelete({ _id: id, userId: userId });
     res.status(200).json({
       success: true,
     });

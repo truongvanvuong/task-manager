@@ -27,13 +27,13 @@ const updateUser = async (req, res) => {
     );
     res.status(200).json({
       success: true,
-      message: 'Cập nhật thông người dùng thành công',
+      message: 'đã được thay đổi',
       data: updateUser,
     });
   } catch (err) {
     res.status(500).json({
       success: false,
-      message: 'Thông tin người dùng chưa được cập nhật',
+      message: 'chưa được cập nhật',
       error: err,
     });
   }
@@ -95,7 +95,12 @@ const getUserProfile = async (req, res) => {
 const deleteUser = async (req, res) => {
   try {
     const id = req.params.id;
-    await User.findByIdAndDelete(id);
+
+    const user = await User.findByIdAndDelete(id);
+
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
     res.status(200).json({
       success: true,
       message: 'Người dùng đã được xóa',
