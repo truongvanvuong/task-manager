@@ -212,7 +212,7 @@ const AccountSettings = ({ isModalOpen, setIsModalOpen }) => {
     };
     return (
         <Modal centered width={1000} footer={false} open={isModalOpen} onCancel={handleOnCancelModal}>
-            <div className="mt-4 w-full flex lg:flex-row flex-col gap-20">
+            <div className="mt-4 w-full flex lg:flex-row flex-col gap-10 lg:gap20">
                 <div className="lg:w-[25%] w-full flex flex-col items-center">
                     <Input type="file" id="uploadFile" className="hidden" onChange={handleUploadOnchange} />
                     <label htmlFor="uploadFile">
@@ -263,8 +263,8 @@ const AccountSettings = ({ isModalOpen, setIsModalOpen }) => {
                     </h1>
                     <div
                         className={`${
-                            showChangePassword ? 'overflow-auto' : 'overflow-hidden'
-                        } h-[420px] px-2 overflow-overlay`}
+                            showChangePassword ? 'overflow- h-[420px]' : 'overflow-hidden'
+                        } px-2 overflow-overlay`}
                     >
                         <div className="py-3">
                             <label className="text-[1.1rem] font-medium" htmlFor="fullname">
@@ -501,10 +501,10 @@ const AccountSettings = ({ isModalOpen, setIsModalOpen }) => {
                                 </div>
                             )}
                         </div>
-                        <div>
+                        <div className="relative">
                             <h3 className="text-[1rem] font-medium">Xóa tài khoản</h3>
-                            <div className="flex items-center justify-between gap-4">
-                                <p className="w-[60%] lg:w-[75%]">
+                            <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+                                <p className="w-full md:w-[70%]">
                                     Một khi bạn xóa tài khoản của mình, sẽ không có cách nào khôi phục lại được nữa. Hãy
                                     chắc chắn.
                                 </p>

@@ -31,7 +31,7 @@ const Important = () => {
 
             <div>
                 {loading ? (
-                    <div className="flex flex-col items-center justify-center h-[calc(100vh-160px)] opacity-90">
+                    <div className="flex flex-col items-center justify-center lg:h-[calc(100vh-160px)] md:h-[calc(100vh-310px)] h-[calc(100vh-270px)] opacity-90">
                         <Spin size="large" />
                     </div>
                 ) : (

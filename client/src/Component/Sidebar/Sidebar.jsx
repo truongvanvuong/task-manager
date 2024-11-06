@@ -107,144 +107,152 @@ const Sidebar = ({ setIsModalOpen }) => {
         </div>
     );
     return (
-        <aside
-            className={`border border-defaultBorder dark:border-defaultBorderDark dark:bg-gray rounded-xl shadow-lg wrap-sidebar ${
-                showSidebar && 'translate-x-0'
-            }`}
-        >
-            <div
-                className={`my-4 h-[calc(100%-2rem)] flex flex-shrink-0 flex-grow-0 flex-col justify-between transition-sidebar ${
-                    collapse
-                        ? 'lg:items-center lg:w-[80px] lg:min-w-[80px] lg:max-w-[80px] lg:basis-[80px] w-[220px] min-w-[220px] max-w-[220px] basis-[220px]'
-                        : 'w-[220px] min-w-[220px] max-w-[220px] basis-[220px]'
+        <div>
+            <aside
+                className={`border border-defaultBorder dark:border-defaultBorderDark dark:bg-gray rounded-r-xl h-full lg:rounded-xl shadow-lg wrap-sidebar ${
+                    showSidebar && 'translate-x-0'
                 }`}
             >
-                <div className="flex gap-4 px-6 items-center relative">
-                    <Popover
-                        open={openPopover}
-                        placement="topLeft"
-                        trigger="click"
-                        content={contentPopover}
-                        arrow={false}
-                        onOpenChange={handleOpenChange}
-                    >
-                        <div className="cursor-pointer">
-                            {user?.avatarUrl ? (
-                                <Avatar
-                                    className="transition-all duration-300"
-                                    size={collapse ? 36 : 48}
-                                    src={user?.avatarUrl}
-                                />
-                            ) : (
-                                <Avatar
-                                    className="transition-all duration-300"
-                                    size={collapse ? 36 : 48}
-                                    icon={<UserOutlined />}
-                                />
-                            )}
-                        </div>
-                    </Popover>
-
-                    <h2
-                        className={`${isShow ? '' : 'lg:hidden'} ${
-                            collapse && 'lg:hidden'
-                        } text-[1rem] dark:text-textDark font-medium animate__animated animate__fadeIn animate__delay-0.1s`}
-                    >
-                        {user?.fullname}
-                    </h2>
-
-                    <Tippy
-                        placement="right"
-                        className="hidden"
-                        content={collapse ? 'Mở rộng' : 'Thu gọn'}
-                        theme={isDarkMode ? 'dark' : 'light'}
-                    >
-                        <div
-                            className="absolute w-8 h-8 hidden xl:flex border-defaultBorder border rounded-md items-center justify-center -right-0 translate-x-1/2 bg-white shadow-xl cursor-pointer dark:bg-gray dark:border-defaultBorderDark"
-                            onClick={handleSideBar}
+                <div
+                    className={`my-4 h-[calc(100%-2rem)] flex flex-shrink-0 flex-grow-0 flex-col justify-between transition-sidebar ${
+                        collapse
+                            ? 'lg:items-center lg:w-[80px] lg:min-w-[80px] lg:max-w-[80px] lg:basis-[80px] w-[220px] min-w-[220px] max-w-[220px] basis-[220px]'
+                            : 'w-[220px] min-w-[220px] max-w-[220px] basis-[220px]'
+                    }`}
+                >
+                    <div className="flex gap-4 px-6 items-center relative">
+                        <Popover
+                            open={openPopover}
+                            placement="topLeft"
+                            trigger="click"
+                            content={contentPopover}
+                            arrow={false}
+                            onOpenChange={handleOpenChange}
                         >
-                            {collapse ? (
-                                <AiOutlineMenuUnfold className="text-[1.2rem] text-textColor dark:text-textDark" />
+                            <div className="cursor-pointer">
+                                {user?.avatarUrl ? (
+                                    <Avatar
+                                        className="transition-all duration-300"
+                                        size={collapse ? 36 : 48}
+                                        src={user?.avatarUrl}
+                                    />
+                                ) : (
+                                    <Avatar
+                                        className="transition-all duration-300"
+                                        size={collapse ? 36 : 48}
+                                        icon={<UserOutlined />}
+                                    />
+                                )}
+                            </div>
+                        </Popover>
+
+                        <h2
+                            className={`${isShow ? '' : 'lg:hidden'} ${
+                                collapse && 'lg:hidden'
+                            } text-[1rem] dark:text-textDark font-medium animate__animated animate__fadeIn animate__delay-0.1s`}
+                        >
+                            {user?.fullname}
+                        </h2>
+
+                        <Tippy
+                            placement="right"
+                            className="hidden"
+                            content={collapse ? 'Mở rộng' : 'Thu gọn'}
+                            theme={isDarkMode ? 'dark' : 'light'}
+                        >
+                            <div
+                                className="absolute w-8 h-8 hidden xl:flex border-defaultBorder border rounded-md items-center justify-center -right-0 translate-x-1/2 bg-white shadow-xl cursor-pointer dark:bg-gray dark:border-defaultBorderDark"
+                                onClick={handleSideBar}
+                            >
+                                {collapse ? (
+                                    <AiOutlineMenuUnfold className="text-[1.2rem] text-textColor dark:text-textDark" />
+                                ) : (
+                                    <BsArrowLeft className="text-[1.2rem] text-textColor dark:text-textDark" />
+                                )}
+                            </div>
+                        </Tippy>
+                        <div
+                            onClick={handleShowSideBar}
+                            className={`absolute w-10 h-10 border-defaultBorder border rounded-md flex items-center justify-center top-8 -right-0 ${
+                                showSidebar ? 'translate-x-1/2' : 'translate-x-full'
+                            } bg-white shadow-xl cursor-pointer dark:bg-gray dark:border-defaultBorderDark xl:hidden`}
+                        >
+                            {showSidebar ? (
+                                <BsArrowLeft className="text-[1.4rem] text-textColor dark:text-textDark" />
                             ) : (
-                                <BsArrowLeft className="text-[1.2rem] text-textColor dark:text-textDark" />
+                                <AiOutlineMenuUnfold className="text-[1.4rem] text-textColor dark:text-textDark" />
                             )}
                         </div>
-                    </Tippy>
-                    <div
-                        onClick={handleShowSideBar}
-                        className={`absolute w-10 h-10 border-defaultBorder border rounded-md flex items-center justify-center top-8 -right-0 ${
-                            showSidebar ? 'translate-x-1/2' : 'translate-x-full'
-                        } bg-white shadow-xl cursor-pointer dark:bg-gray dark:border-defaultBorderDark xl:hidden`}
-                    >
-                        {showSidebar ? (
-                            <BsArrowLeft className="text-[1.4rem] text-textColor dark:text-textDark" />
-                        ) : (
-                            <AiOutlineMenuUnfold className="text-[1.4rem] text-textColor dark:text-textDark" />
-                        )}
+                    </div>
+                    <div className="w-full">
+                        <ul>
+                            {navs.map((item, index) => {
+                                return (
+                                    <li key={index}>
+                                        <Tippy
+                                            onShow={() => (collapse ? true : false)}
+                                            placement="right"
+                                            content={item.display}
+                                            theme={isDarkMode ? 'dark' : 'light'}
+                                        >
+                                            <NavLink
+                                                to={item.path}
+                                                className={(navClass) =>
+                                                    navClass.isActive
+                                                        ? `bg-separator dark:bg-defaultBorderDark flex items-center gap-3 px-6 h-9 border-r-4 border-primaryColor`
+                                                        : `hover:bg-layoutBackground dark:hover:bg-separatorDark flex items-center h-9 gap-3 px-6 border-r-4 border-transparent`
+                                                }
+                                            >
+                                                <span
+                                                    className={`dark:text-textDark inline-flex ${
+                                                        collapse ? 'lg:w-full' : 'w-max'
+                                                    } text-secondaryText`}
+                                                >
+                                                    {item.icon}
+                                                </span>
+
+                                                <span
+                                                    className={`${isShow ? '' : 'lg:hidden'} ${
+                                                        collapse && 'lg:hidden'
+                                                    } dark:text-textDark text-[1rem] font-medium text-secondaryText w-max animate__animated animate__fadeIn animate__delay-0.1s`}
+                                                >
+                                                    {item.display}
+                                                </span>
+                                            </NavLink>
+                                        </Tippy>
+                                    </li>
+                                );
+                            })}
+                        </ul>
+                    </div>
+                    <div className="flex items-center gap-3 px-6">
+                        <Tippy
+                            onShow={() => (collapse ? true : false)}
+                            placement="right"
+                            content={`Giao diện : ${isDarkMode ? 'tối' : 'sáng'}`}
+                            theme={isDarkMode ? 'dark' : 'light'}
+                        >
+                            <Switch
+                                onChange={handleChange}
+                                checked={isDarkMode}
+                                checkedChildren={<MoonFilled />}
+                                unCheckedChildren={<SunFilled />}
+                                defaultChecked
+                            />
+                        </Tippy>
+                        <span className={`dark:text-textDark title-theme ${collapse && 'lg:hidden'}`}>
+                            {isDarkMode ? 'Tối' : 'Sáng'}
+                        </span>
                     </div>
                 </div>
-                <div className="w-full">
-                    <ul>
-                        {navs.map((item, index) => {
-                            return (
-                                <li key={index}>
-                                    <Tippy
-                                        onShow={() => (collapse ? true : false)}
-                                        placement="right"
-                                        content={item.display}
-                                        theme={isDarkMode ? 'dark' : 'light'}
-                                    >
-                                        <NavLink
-                                            to={item.path}
-                                            className={(navClass) =>
-                                                navClass.isActive
-                                                    ? `bg-separator dark:bg-defaultBorderDark flex items-center gap-3 px-6 h-9 border-r-4 border-primaryColor`
-                                                    : `hover:bg-layoutBackground dark:hover:bg-separatorDark flex items-center h-9 gap-3 px-6 border-r-4 border-transparent`
-                                            }
-                                        >
-                                            <span
-                                                className={`dark:text-textDark inline-flex ${
-                                                    collapse ? 'lg:w-full' : 'w-max'
-                                                } text-secondaryText`}
-                                            >
-                                                {item.icon}
-                                            </span>
-
-                                            <span
-                                                className={`${isShow ? '' : 'lg:hidden'} ${
-                                                    collapse && 'lg:hidden'
-                                                } dark:text-textDark text-[1rem] font-medium text-secondaryText w-max animate__animated animate__fadeIn animate__delay-0.1s`}
-                                            >
-                                                {item.display}
-                                            </span>
-                                        </NavLink>
-                                    </Tippy>
-                                </li>
-                            );
-                        })}
-                    </ul>
-                </div>
-                <div className="flex items-center gap-3 px-6">
-                    <Tippy
-                        onShow={() => (collapse ? true : false)}
-                        placement="right"
-                        content={`Giao diện : ${isDarkMode ? 'tối' : 'sáng'}`}
-                        theme={isDarkMode ? 'dark' : 'light'}
-                    >
-                        <Switch
-                            onChange={handleChange}
-                            checked={isDarkMode}
-                            checkedChildren={<MoonFilled />}
-                            unCheckedChildren={<SunFilled />}
-                            defaultChecked
-                        />
-                    </Tippy>
-                    <span className={`dark:text-textDark title-theme ${collapse && 'lg:hidden'}`}>
-                        {isDarkMode ? 'Tối' : 'Sáng'}
-                    </span>
-                </div>
-            </div>
-        </aside>
+            </aside>
+            {showSidebar && (
+                <div
+                    className="fixed z-[50] inset-0 xl:hidden bg-[#00000084] duration-300 transition-all"
+                    onClick={handleShowSideBar}
+                ></div>
+            )}
+        </div>
     );
 };
 

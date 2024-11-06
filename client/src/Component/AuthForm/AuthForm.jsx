@@ -1,4 +1,3 @@
-import { useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { Link, useLocation } from 'react-router-dom';
 
@@ -6,25 +5,13 @@ import { Button } from '../../Component';
 import { FcGoogle } from 'react-icons/fc';
 
 const AuthForm = ({ linkTo, linkText, title, img, btnText, children, handleSubmit }) => {
-    const bodyAuthForm = useRef();
     const location = useLocation();
-
-    useEffect(() => {
-        if (location.pathname === '/register') {
-            bodyAuthForm.current.classList.add('reverse');
-            setTimeout(() => {}, 100);
-        } else if (location.pathname === '/login') {
-            bodyAuthForm.current.classList.add('reverse');
-            bodyAuthForm.current.classList.remove('reverse');
-            setTimeout(() => {}, 100);
-        }
-    }, [location.pathname]);
 
     return (
         <div className="w-full h-screen flex items-center justify-center gradien">
-            <div className="bg-white rounded-2xl shadow-2xl p-1 w-full max-w-[1000px] mx-6">
-                <div className="flex w-full h-full bg-primaryColor rounded-2xl" ref={bodyAuthForm}>
-                    <div className="left w-[60%] flex z-10 flex-col gap-8 justify-between transition-all ease-linear duration-[400ms]">
+            <div className="bg-white rounded-2xl shadow-2xl p-1 w-full  max-w-[800px] lg:max-w-[1000px] mx-6">
+                <div className="flex w-full h-full lg:bg-primaryColor lg:rounded-2xl">
+                    <div className="left w-[60%] lg:flex z-10 flex-col gap-8 justify-between transition-all ease-linear duration-[400ms] hidden">
                         <p className="text-2xl text-white mt-16 ml-8 z-10">
                             "Sắp xếp thời gian và
                             <br />
@@ -35,7 +22,7 @@ const AuthForm = ({ linkTo, linkText, title, img, btnText, children, handleSubmi
                         </figure>
                     </div>
                     <div className="right bg-white w-full flex flex-col items-center py-10 justify-center transition-all ease-linear duration-[400ms]">
-                        <div className="w-[60%]">
+                        <div className="w-full px-10 lg:px-0 lg:w-[60%]">
                             <h2 className="font-extrabold text-center text-3xl mb-8">{title}</h2>
                             <div>
                                 <form onSubmit={handleSubmit} className="gap flex flex-col gap-6">
@@ -57,7 +44,7 @@ const AuthForm = ({ linkTo, linkText, title, img, btnText, children, handleSubmi
                                         Đăng nhập với google
                                     </Button>
                                 </div>
-                                <div className="mt-4 flex items-center justify-center gap-2 text-base">
+                                <div className="mt-4 flex flex-col md:flex-row items-center justify-center gap-2 text-base">
                                     <p>Bạn {location.pathname === '/login' ? 'chưa' : 'đã'} có tài khoản?</p>
                                     <Link to={linkTo} className="text-primaryColor font-medium hover:underline">
                                         {linkText}

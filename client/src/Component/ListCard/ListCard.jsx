@@ -1,10 +1,11 @@
 import { useState } from 'react';
-import { Card as CardAntd, Col, Row } from 'antd';
+import { Col, Row } from 'antd';
 import { AiOutlinePlus } from 'react-icons/ai';
 import PropTypes from 'prop-types';
 
 import Card from '../Card';
 import Modal from '../Modal';
+import Button from '../Button';
 
 const ListCard = ({ dataTask, refreshData, imgNoTask, titleNoTask }) => {
     const [openModal, setOpenModal] = useState(false);
@@ -22,18 +23,6 @@ const ListCard = ({ dataTask, refreshData, imgNoTask, titleNoTask }) => {
                         </Col>
                     );
                 })}
-                <Col span={6} lg={6} md={8} sm={12} xs={24}>
-                    <CardAntd
-                        onClick={handleOpenModal}
-                        className="dark:bg-[#333333] w-full h-full min-h-[200px] flex items-center justify-center hover:bg-[#fafafa] cursor-pointer dark:hover:bg-defaultBorderDark"
-                        bordered
-                    >
-                        <div className="flex items-center gap-3">
-                            <AiOutlinePlus className="text-[1.4rem]" />
-                            <span className="font-medium text-[1rem]">Tạo công việc mới</span>
-                        </div>
-                    </CardAntd>
-                </Col>
             </Row>
             {dataTask.length <= 0 && (
                 <div className="absolute inset-0 flex flex-col items-center justify-center h-full opacity-90 z-0">
@@ -43,7 +32,15 @@ const ListCard = ({ dataTask, refreshData, imgNoTask, titleNoTask }) => {
                     <p className="text-[1.1rem]">{titleNoTask}</p>
                 </div>
             )}
-
+            <div className="fixed right-5 bottom-4 lg:right-10 lg:bottom-10 z-[40]">
+                <Button
+                    onClick={handleOpenModal}
+                    className="w-12 h-12 rounded-full flex items-center justify-center"
+                    primary
+                >
+                    <AiOutlinePlus size={22} />
+                </Button>
+            </div>
             <Modal
                 titleModal="Thêm công việc mới"
                 open={openModal}
