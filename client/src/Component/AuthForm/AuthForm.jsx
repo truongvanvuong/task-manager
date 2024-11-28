@@ -9,7 +9,7 @@ const AuthForm = ({ linkTo, linkText, title, img, btnText, children, handleSubmi
 
     return (
         <div className="w-full h-screen flex items-center justify-center gradien">
-            <div className="bg-white rounded-2xl shadow-2xl p-1 w-full  max-w-[800px] lg:max-w-[1000px] mx-6">
+            <div className="bg-white rounded-2xl shadow-2xl p-1 w-full max-w-[600px] lg:max-w-[900px] mx-4 md:mx-0">
                 <div className="flex w-full h-full lg:bg-primaryColor lg:rounded-2xl">
                     <div className="left w-[60%] lg:flex z-10 flex-col gap-8 justify-between transition-all ease-linear duration-[400ms] hidden">
                         <p className="text-2xl text-white mt-16 ml-8 z-10">

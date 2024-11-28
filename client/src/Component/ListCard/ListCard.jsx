@@ -14,11 +14,11 @@ const ListCard = ({ dataTask, refreshData, imgNoTask, titleNoTask }) => {
     };
 
     return (
-        <div className="mt-6 lg:h-[calc(100vh-160px)] md:h-[calc(100vh-310px)] h-[calc(100vh-270px)] overflow-y-auto overflow-x-hidden px-5 relative">
+        <div className="mt-6 md:h-[calc(100vh-245px)] h-[calc(100vh-295px)] overflow-y-auto overflow-x-hidden px-5 relative">
             <Row gutter={[16, 16]} className="relative z-10">
                 {dataTask.map((item) => {
                     return (
-                        <Col span={6} xl={6} lg={8} md={12} sm={24} xs={24} key={item._id}>
+                        <Col span={6} xs={24} sm={24} md={12} lg={8} xl={6} key={item._id}>
                             <Card item={item} refreshData={refreshData} />
                         </Col>
                     );
@@ -29,7 +29,7 @@ const ListCard = ({ dataTask, refreshData, imgNoTask, titleNoTask }) => {
                     <figure className="w-56 h-56">
                         <img className="h-full w-full" src={imgNoTask} alt=" No Task" />
                     </figure>
-                    <p className="text-[1.1rem]">{titleNoTask}</p>
+                    <p className=" text-sm md:text-base text-center ">{titleNoTask}</p>
                 </div>
             )}
             <div className="fixed right-5 bottom-4 lg:right-10 lg:bottom-10 z-[40]">

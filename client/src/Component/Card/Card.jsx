@@ -85,11 +85,7 @@ const Card = ({ item, refreshData }) => {
 
     return (
         <div>
-            <CardAntd
-                classNames={{ body: 'h-full' }}
-                className="dark:bg-[#333333] border-defaultBorder dark:border-defaultBorderDark w-full h-full"
-                bordered
-            >
+            <CardAntd classNames={{ body: 'h-full' }} className="dark:bg-[#333333] w-full h-full shadow-md">
                 <div className="flex flex-col justify-between gap-3 h-full">
                     <div className="flex flex-col gap-3">
                         <div className="flex justify-between items-center">
@@ -105,7 +101,7 @@ const Card = ({ item, refreshData }) => {
                         <div className="flex justify-between items-center">
                             <Button
                                 onClick={() => handleStatus(item._id, item.completed)}
-                                medium
+                                small
                                 roundedBorder
                                 className={`${
                                     item.completed ? 'bg-green-600' : 'bg-red-600'
@@ -113,8 +109,9 @@ const Card = ({ item, refreshData }) => {
                             >
                                 {item.completed ? 'Đã hoàn thành' : 'Chưa hoàn thành'}
                             </Button>
-                            <div className="flex gap-4 items-center text-[1.4rem]">
+                            <div className="flex gap-4 items-center text-[1.2rem]">
                                 <Tippy
+                                    touch="hold"
                                     content="Chỉnh sửa"
                                     placement="top"
                                     className="dark:border dark:border-defaultBorderDark"
@@ -129,6 +126,7 @@ const Card = ({ item, refreshData }) => {
                                     </div>
                                 </Tippy>
                                 <Tippy
+                                    touch="hold"
                                     content="Xóa"
                                     placement="top"
                                     theme={isDarkMode ? 'light' : 'dark'}

@@ -16,7 +16,6 @@ import { getProfile } from '../../authService/authService.js';
 const AccountSettings = ({ isModalOpen, setIsModalOpen }) => {
     const url = BASE_URL + '/user';
     const token = localStorage.getItem('token');
-
     const navigate = useNavigate();
     const { dispatch } = useContext(authContext);
     const [selectedFile, setSelectedFile] = useState(null);
@@ -89,12 +88,11 @@ const AccountSettings = ({ isModalOpen, setIsModalOpen }) => {
 
         if (field === 'avatar') {
             const { success, data } = await upLoadImageToCloudinary(selectedFile);
-            // Cập nhật avatarUrl trong bản sao của userData
             updatedUserData.avatarUrl = success ? data.url : '';
         }
 
         try {
-            const { data: user } = await axios.put(`${url}/${userData._id}1`, updatedUserData, {
+            const { data: user } = await axios.put(`${url}/${userData._id}`, updatedUserData, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
@@ -218,9 +216,16 @@ const AccountSettings = ({ isModalOpen, setIsModalOpen }) => {
                     <label htmlFor="uploadFile">
                         <div className="relative cursor-pointer">
                             {userData?.avatarUrl || previewURL ? (
-                                <Avatar size={200} alt={userData?.fullname} src={previewURL || userData?.avatarUrl} />
+                                <Avatar
+                                    size={{ xs: 120, sm: 120, md: 160, lg: 200, xl: 200 }}
+                                    alt={userData?.fullname}
+                                    src={previewURL || userData?.avatarUrl}
+                                />
                             ) : (
-                                <Avatar size={200} icon={<UserOutlined />} />
+                                <Avatar
+                                    size={{ xs: 120, sm: 120, md: 160, lg: 200, xl: 200 }}
+                                    icon={<UserOutlined />}
+                                />
                             )}
                             <div
                                 className="flex justify-center items-center absolute top-0 left-0 w-full h-full rounded-[50%] bg-[rgba(0,0,0,0.2)] opacity-0 hover:opacity-100 transition-opacity"
@@ -257,7 +262,7 @@ const AccountSettings = ({ isModalOpen, setIsModalOpen }) => {
                         <p className="font-normal">@{userData?.username ? userData.username : 'Chưa thiết lập'}</p>
                     </div>
                 </div>
-                <div className="w-full lg:w-[75%] px-3">
+                <div className="w-full lg:w-[75%] md:px-3">
                     <h1 className="text-[26px] font-semibold py-3 mb-5 border-b border-defaultBorder dark:border-defaultBorderDark">
                         Thông tin cá nhân
                     </h1>
@@ -520,7 +525,7 @@ const AccountSettings = ({ isModalOpen, setIsModalOpen }) => {
                                         />
                                     }
                                 >
-                                    <Button primary className="bg-red-600 border-red-600" small>
+                                    <Button primary className="bg-red-600 border-red-600" medium>
                                         Xóa tài khoản
                                     </Button>
                                 </Popconfirm>

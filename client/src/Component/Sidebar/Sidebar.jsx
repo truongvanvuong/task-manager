@@ -7,7 +7,7 @@ import { ContextTheme } from '../../App.jsx';
 import { AiFillHome, AiFillProfile, AiOutlineMenuUnfold } from 'react-icons/ai';
 import { RiFileList2Fill } from 'react-icons/ri';
 import { BsClipboard2CheckFill, BsArrowLeft } from 'react-icons/bs';
-import { MoonFilled, SunFilled, UserOutlined } from '@ant-design/icons';
+import { MoonFilled, SunFilled, UserOutlined, CloseOutlined, MenuOutlined } from '@ant-design/icons';
 import { Switch, Popover, Avatar } from 'antd';
 import Tippy from '@tippyjs/react';
 import { authContext, logoutUser } from '../../context/AuthContext.jsx';
@@ -161,7 +161,7 @@ const Sidebar = ({ setIsModalOpen }) => {
                             theme={isDarkMode ? 'dark' : 'light'}
                         >
                             <div
-                                className="absolute w-8 h-8 hidden xl:flex border-defaultBorder border rounded-md items-center justify-center -right-0 translate-x-1/2 bg-white shadow-xl cursor-pointer dark:bg-gray dark:border-defaultBorderDark"
+                                className="absolute w-8 h-8 hidden lg:flex border-defaultBorder border rounded-md items-center justify-center right-0 translate-x-1/2 bg-white shadow-xl cursor-pointer dark:bg-gray dark:border-defaultBorderDark"
                                 onClick={handleSideBar}
                             >
                                 {collapse ? (
@@ -171,18 +171,6 @@ const Sidebar = ({ setIsModalOpen }) => {
                                 )}
                             </div>
                         </Tippy>
-                        <div
-                            onClick={handleShowSideBar}
-                            className={`absolute w-10 h-10 border-defaultBorder border rounded-md flex items-center justify-center top-8 -right-0 ${
-                                showSidebar ? 'translate-x-1/2' : 'translate-x-full'
-                            } bg-white shadow-xl cursor-pointer dark:bg-gray dark:border-defaultBorderDark xl:hidden`}
-                        >
-                            {showSidebar ? (
-                                <BsArrowLeft className="text-[1.4rem] text-textColor dark:text-textDark" />
-                            ) : (
-                                <AiOutlineMenuUnfold className="text-[1.4rem] text-textColor dark:text-textDark" />
-                            )}
-                        </div>
                     </div>
                     <div className="w-full">
                         <ul>
@@ -246,6 +234,17 @@ const Sidebar = ({ setIsModalOpen }) => {
                     </div>
                 </div>
             </aside>
+            <div
+                onClick={handleShowSideBar}
+                className="fixed w-10 h-10 rounded-md flex items-center justify-center top-6 right-[20px] z-[10]
+                     bg-white shadow-sm cursor-pointer dark:bg-gray dark:border-defaultBorderDark lg:hidden"
+            >
+                {showSidebar ? (
+                    <CloseOutlined className="text-[1.4rem] text-textColor dark:text-textDark" />
+                ) : (
+                    <MenuOutlined className="text-[1.4rem] text-textColor dark:text-textDark" />
+                )}
+            </div>
             {showSidebar && (
                 <div
                     className="fixed z-[50] inset-0 xl:hidden bg-[#00000084] duration-300 transition-all"

@@ -5,6 +5,7 @@
 }
 
 :root {
+    --animate-duration: 600ms;
     --primary-color: #fa8c16;
 }
 input[type='password']::-ms-reveal {
@@ -13,6 +14,7 @@ input[type='password']::-ms-reveal {
 html {
     scroll-behavior: smooth;
 }
+
 html *::-webkit-scrollbar {
     border-radius: 0;
     width: 8px;
@@ -53,7 +55,7 @@ body {
     @apply px-[12px] py-2 text-base;
 }
 .small {
-    @apply px-[10px] py-1.5 text-sm;
+    @apply px-[10px] py-1.5 text-xs;
 }
 .large {
     @apply px-[40px] py-2 text-base;
@@ -102,9 +104,9 @@ body {
     height: 100%;
 }
 /* tablet & mobile */
-@media (max-width: 1024px) {
+@media (max-width: 1023px) {
     .wrap-sidebar {
-        @apply fixed -translate-x-full top-0 left-0 bottom-0 z-[100] bg-white transition-transform duration-300;
+        @apply fixed -translate-x-full top-0 left-0 bottom-0 z-[100] bg-white transition-transform ease-out duration-[350ms];
     }
 }
 /* Tablet */
@@ -113,4 +115,8 @@ body {
 }
 /* Mobile */
 @media (max-width: 46.1875em) {
+}
+
+.animate__animated.animate__fadeIn .animate__animated.animate__fadeInRight {
+    --animate-duration: 0.4s;
 }

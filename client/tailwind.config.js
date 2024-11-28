@@ -26,7 +26,7 @@ export default {
                 '3xl': 'rgba(0, 0, 0, 0.15) 0px 5px 15px 0px;',
             },
             screens: {
-                sm: '600px',
+                sm: '480px',
 
                 md: '768px',
 
@@ -34,7 +34,7 @@ export default {
 
                 xl: '1200px',
 
-                '2xl': '1536px',
+                '2xl': '1400px',
             },
         },
     },

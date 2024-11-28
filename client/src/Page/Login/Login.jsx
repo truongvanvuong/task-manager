@@ -36,7 +36,6 @@ const Login = () => {
         const hasError = Object.values(newErrors).some(Boolean);
         if (!hasError) {
             const response = await loginUser(dispatch, credentials);
-            console.log(response);
             if (response.success) {
                 navigate('/home');
                 message('success', response.message);

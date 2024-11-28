@@ -2,7 +2,7 @@ import AllTask from '../AllTask';
 
 const Home = () => {
     return (
-        <div>
+        <div className="h-full">
             <AllTask />
         </div>
     );

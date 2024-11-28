@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Spin } from 'antd';
+import { Spin, Pagination } from 'antd';
 
 import { HeadingPage, ListCard } from '../../Component';
 import useFetch from '../../Hook/useFetch.js';
@@ -9,18 +9,21 @@ import filterTasksByDate from '../../Utils/filterTasksByDate.js';
 import imgNoTask from '../../assets/image/tasks-rafiki.png';
 const InCompleted = () => {
     const url = `${BASE_URL}/task/incompletes`;
-    const { data, loading, error, refresh } = useFetch(url);
-
+    const { data, dataTasks, loading, error, refresh, setPage } = useFetch(url);
     const [selectedDate, setSelectedDate] = useState(null);
     const [filterType, setFilterType] = useState(null);
+
+    const tasksData = selectedDate === null ? dataTasks : filterTasksByDate(dataTasks, filterType, selectedDate);
 
     const onChangeDate = (date, dateString) => {
         setFilterType('specific');
         setSelectedDate(date);
     };
-    const tasksData = selectedDate === null ? data : filterTasksByDate(data, filterType, selectedDate);
+    const handlePagination = (page) => {
+        setPage(page);
+    };
     return (
-        <div>
+        <div className="h-full flex flex-col justify-between">
             <HeadingPage
                 title="Chưa hoàn thành"
                 onChangeDate={onChangeDate}
@@ -43,6 +46,17 @@ const InCompleted = () => {
                     </div>
                 )}
             </div>
+            {tasksData.length > 0 && (
+                <div className="my-2 px-5">
+                    <Pagination
+                        total={data.total}
+                        current={data.page}
+                        pageSize={data.pageSize}
+                        defaultCurrent={1}
+                        onChange={handlePagination}
+                    />
+                </div>
+            )}
         </div>
     );
 };

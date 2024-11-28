@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import dayjs from 'dayjs';
-
 import { DatePicker } from 'antd';
 import { MoonFilled, SunFilled } from '@ant-design/icons';
+
 import Button from '../Button';
 
 const HeadingPage = ({ title, onChangeDate, setFilterType, setSelectedDate }) => {
@@ -36,7 +36,7 @@ const HeadingPage = ({ title, onChangeDate, setFilterType, setSelectedDate }) =>
         setFilterType(filterType);
     };
     return (
-        <div className="px-5 flex-col lg:flex-row flex lg:items-end gap-4">
+        <div className="px-5 flex-col xl:flex-row flex xl:items-end gap-4">
             <h1 className="font-bold text-[1.5rem] pb-2 border-b-2 border-primaryColor w-max dark:text-textHeaddingDark">
                 {title}
             </h1>
@@ -52,14 +52,14 @@ const HeadingPage = ({ title, onChangeDate, setFilterType, setSelectedDate }) =>
                         <span className="text-[1rem]">{titleHello}</span>
                     </div>
                 </div>
-                <div className="flex flex-col lg:flex-row lg:items-end gap-4 justify-between">
+                <div className="flex flex-col md:flex-row md:items-end gap-4 justify-between">
                     <div className="flex gap-3 ">
                         <Button
                             onClick={() => handleTasksByDay(null)}
                             outline
                             roundedBorder
                             small
-                            className={`text-textColor  dark:hover:bg-separatorDark ${
+                            className={`text-textColor  dark:hover:bg-separatorDark  ${
                                 activeButton === null ? 'bg-separator dark:bg-defaultBorderDark' : 'hover:bg-separator'
                             }`}
                         >
