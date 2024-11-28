@@ -28,68 +28,21 @@ const getTask = async (req, res) => {
     });
   } catch (err) {}
 };
-const getTaskCompleteds = async (req, res) => {
-  const userId = req.user.id;
-
-  try {
-    const taskCompletes = await Task.find({ completed: true, userId: userId });
-    res.status(200).json({
-      success: true,
-      data: taskCompletes,
-    });
-  } catch (err) {
-    res.status(500).json({
-      success: false,
-      error: err,
-    });
-  }
+const getTaskCompleteds = async (req, res, next) => {
+  req.filter = { userId: req.user.id, completed: true };
+  next();
 };
-const getTaskImportants = async (req, res) => {
-  const userId = req.user.id;
-
-  try {
-    const taskImportants = await Task.find({ important: true, userId: userId });
-    res.status(200).json({
-      success: true,
-      data: taskImportants,
-    });
-  } catch (err) {
-    res.status(500).json({
-      success: false,
-      error: err,
-    });
-  }
+const getTaskImportants = async (req, res, next) => {
+  req.filter = { userId: req.user.id, important: true };
+  next();
 };
-const getTaskIncompletes = async (req, res) => {
-  const userId = req.user.id;
-
-  try {
-    const taskIncompletes = await Task.find({ completed: false, userId });
-    res.status(200).json({
-      success: true,
-      data: taskIncompletes,
-    });
-  } catch (err) {
-    res.status(500).json({
-      success: false,
-      error: err,
-    });
-  }
+const getTaskIncompletes = async (req, res, next) => {
+  req.filter = { userId: req.user.id, completed: false };
+  next();
 };
-const getAllTask = async (req, res) => {
-  const userId = req.user.id;
-  try {
-    const allTasks = await Task.find({ userId: userId });
-    res.status(200).json({
-      success: true,
-      data: allTasks,
-    });
-  } catch (err) {
-    res.status(500).json({
-      success: false,
-      error: err,
-    });
-  }
+const getAllTask = async (req, res, next) => {
+  req.filter = { userId: req.user.id };
+  next();
 };
 const updateTask = async (req, res) => {
   const userId = req.user.id;
@@ -127,6 +80,7 @@ const deleteTask = async (req, res) => {
     });
   }
 };
+
 export {
   createTask,
   getTask,
