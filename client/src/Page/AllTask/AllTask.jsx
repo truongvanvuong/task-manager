@@ -35,7 +35,7 @@ const AllTask = () => {
                 />
                 <div>
                     {loading ? (
-                        <div className="flex flex-col items-center justify-center opacity-90 lg:h-[calc(100vh-160px)] md:h-[calc(100vh-310px)] h-[calc(100vh-270px)]">
+                        <div className="flex flex-col items-center justify-center opacity-90 md:h-[calc(100vh-245px)] h-[calc(100vh-295px)]">
                             <Spin size="large" />
                         </div>
                     ) : (
