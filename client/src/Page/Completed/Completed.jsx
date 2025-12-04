@@ -24,7 +24,7 @@ const Completed = () => {
         setPage(page);
     };
     return (
-        <div className="h-full flex flex-col justify-between">
+        <div className="h-full flex flex-col">
             <HeadingPage
                 title="Hoàn thành"
                 onChangeDate={onChangeDate}

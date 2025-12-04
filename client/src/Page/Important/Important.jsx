@@ -24,7 +24,7 @@ const Important = () => {
         setPage(page);
     };
     return (
-        <div className="h-full flex flex-col justify-between">
+        <div className="h-full flex flex-col ">
             <HeadingPage
                 title="Quan trọng"
                 onChangeDate={onChangeDate}

@@ -53,7 +53,7 @@ const login = async (req, res) => {
     const user = await User.findOne({ email });
     if (!user) {
       return res
-        .status(404)
+        .status(401)
         .json({ success: false, message: 'Người dùng không tồn tại' });
     }
 
@@ -62,7 +62,7 @@ const login = async (req, res) => {
       user.password
     );
     if (!checkCorrectPassword) {
-      return res.status(404).json({
+      return res.status(401).json({
         success: false,
         message: 'Email hoặc mật khẩu không chính xác',
       });

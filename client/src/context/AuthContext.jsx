@@ -7,8 +7,13 @@ const authContext = createContext(initialState);
 const loginUser = async (dispatch, credentials) => {
     try {
         const response = await login(credentials);
-        const { data, token } = response;
-        dispatch({ type: 'LOGIN_SUCCESS', payload: { user: data, token: token } });
+        const { token, data } = response;
+        const userData = {
+            avatarUrl: data.avatarUrl,
+            email: data.email,
+            fullname: data.fullname,
+        };
+        dispatch({ type: 'LOGIN_SUCCESS', payload: { user: userData, token: token } });
         return response;
     } catch (err) {
         console.error('Login failed:', err);
@@ -29,7 +34,6 @@ const AuthContextProvider = ({ children }) => {
         } else {
             localStorage.removeItem('user');
         }
-
         if (state.token) {
             localStorage.setItem('token', state.token);
         } else {

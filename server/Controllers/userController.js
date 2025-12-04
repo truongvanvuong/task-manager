@@ -5,7 +5,7 @@ const getUser = async (req, res) => {
   try {
     const id = req.params.id;
 
-    const user = await User.findById(id);
+    const user = await User.findById(id).select('-password');
     res.status(200).json({
       success: true,
       data: user,
@@ -73,7 +73,7 @@ const changPassword = async (req, res) => {
 const getUserProfile = async (req, res) => {
   const userId = req.user.id;
   try {
-    const user = await User.findById(userId);
+    const user = await User.findById(userId).select('-password');
 
     if (!user) {
       return res

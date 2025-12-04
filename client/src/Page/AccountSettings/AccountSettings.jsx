@@ -11,7 +11,7 @@ import upLoadImageToCloudinary from '../../Utils/uploadCloudinary.js';
 import { BASE_URL } from '../../config.js';
 import { Input, Button } from '../../Component';
 import message from '../../Utils/message.js';
-import { getProfile } from '../../authService/authService.js';
+import { getProfile, logout } from '../../authService/authService.js';
 
 const AccountSettings = ({ isModalOpen, setIsModalOpen }) => {
     const url = BASE_URL + '/user';
@@ -40,6 +40,8 @@ const AccountSettings = ({ isModalOpen, setIsModalOpen }) => {
 
     useEffect(() => {
         const fetchUserData = async () => {
+            const token = localStorage.getItem('token');
+            if (!token) return;
             try {
                 const response = await getProfile();
 
@@ -154,7 +156,6 @@ const AccountSettings = ({ isModalOpen, setIsModalOpen }) => {
     };
     const handleChangePassword = async () => {
         if (oldPassword && newPassword.length >= 6) {
-            const user = JSON.parse(localStorage.getItem('user'));
             try {
                 const response = await axios.put(
                     `${url}/change-password`,
@@ -169,6 +170,7 @@ const AccountSettings = ({ isModalOpen, setIsModalOpen }) => {
 
                 message('success', response.data.message);
                 setTimeout(() => {
+                    logout();
                     navigate('/login');
                 }, 800);
             } catch (err) {
@@ -195,17 +197,20 @@ const AccountSettings = ({ isModalOpen, setIsModalOpen }) => {
         try {
             const user = JSON.parse(localStorage.getItem('user'));
             const response = await axios.delete(`${url}/${user._id}`, {
-                headers: { Authorization: `Bearer ${user.token}` },
+                headers: { Authorization: `Bearer ${token}` },
             });
             if (response.data.success) {
                 message('success', response.data.message);
                 setTimeout(() => {
+                    logout();
                     navigate('/login');
                 }, 800);
+            } else {
+                console.log('12232');
+                message('error', response.data.message || 'Failed to delete account');
             }
         } catch (error) {
             console.error(error);
-            message.error(error.response.data.message || 'Failed to delete account');
         }
     };
     return (

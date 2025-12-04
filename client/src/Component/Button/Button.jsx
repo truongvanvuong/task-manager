@@ -26,7 +26,6 @@ const Button = ({
             }
         });
     }
-
     const classes = {
         primary,
         outline,

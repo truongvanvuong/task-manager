@@ -25,7 +25,7 @@ const AllTask = () => {
         setPage(page);
     };
     return (
-        <div className="h-full flex flex-col justify-between">
+        <div className="h-full flex flex-col">
             <div>
                 <HeadingPage
                     title="Toàn bộ công việc"

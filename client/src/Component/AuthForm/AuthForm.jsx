@@ -1,10 +1,11 @@
 import PropTypes from 'prop-types';
 import { Link, useLocation } from 'react-router-dom';
-
+import { Spin } from 'antd';
 import { Button } from '../../Component';
+import { AiOutlineLoading } from 'react-icons/ai';
 import { FcGoogle } from 'react-icons/fc';
 
-const AuthForm = ({ linkTo, linkText, title, img, btnText, children, handleSubmit }) => {
+const AuthForm = ({ linkTo, linkText, title, img, btnText, children, handleSubmit, isLoading }) => {
     const location = useLocation();
 
     return (
@@ -29,7 +30,14 @@ const AuthForm = ({ linkTo, linkText, title, img, btnText, children, handleSubmi
                                     {children}
                                 </form>
                                 <div className="mt-8">
-                                    <Button large primary className="w-full" onClick={handleSubmit}>
+                                    <Button
+                                        disabled={isLoading}
+                                        large
+                                        primary
+                                        className="w-full flex item-center justify-center gap-4"
+                                        leftIcon={isLoading && <Spin size="small" className="icon-spin-btn" />}
+                                        onClick={handleSubmit}
+                                    >
                                         {btnText}
                                     </Button>
                                 </div>
@@ -67,6 +75,7 @@ AuthForm.propTypes = {
     img: PropTypes.string,
     title: PropTypes.string,
     handleSubmit: PropTypes.func,
+    isLoading: PropTypes.bool,
 };
 
 export default AuthForm;

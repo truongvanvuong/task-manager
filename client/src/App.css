@@ -61,7 +61,7 @@ body {
     @apply px-[40px] py-2 text-base;
 }
 .disabled {
-    @apply bg-[rgba(51,51,51,0.05)] text-[#333333] !rounded box-border cursor-text select-none touch-manipulation;
+    @apply !rounded box-border cursor-text select-none touch-manipulation opacity-60 pointer-events-none;
     list-style: none;
     -webkit-user-select: none;
 }
@@ -102,6 +102,9 @@ body {
 
 .ant-col > div {
     height: 100%;
+}
+.icon-spin-btn > .ant-spin-dot-holder {
+    @apply text-white;
 }
 /* tablet & mobile */
 @media (max-width: 1023px) {
