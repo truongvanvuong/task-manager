@@ -44,7 +44,7 @@ const AccountSettings = ({ isModalOpen, setIsModalOpen }) => {
             if (!token) return;
             try {
                 const response = await getProfile();
-
+                console.log('User profile response:', response);
                 setUserInfo(response.data);
                 setUserData(response.data);
             } catch (error) {
@@ -195,8 +195,7 @@ const AccountSettings = ({ isModalOpen, setIsModalOpen }) => {
     };
     const handleDeleteAccount = async () => {
         try {
-            const user = JSON.parse(localStorage.getItem('user'));
-            const response = await axios.delete(`${url}/${user._id}`, {
+            const response = await axios.delete(`${url}/${userData._id}`, {
                 headers: { Authorization: `Bearer ${token}` },
             });
             if (response.data.success) {
@@ -513,6 +512,7 @@ const AccountSettings = ({ isModalOpen, setIsModalOpen }) => {
                         </div>
                         <div className="relative">
                             <h3 className="text-[1rem] font-medium">Xóa tài khoản</h3>
+
                             <div className="flex flex-col md:flex-row items-center justify-between gap-4">
                                 <p className="w-full md:w-[70%]">
                                     Một khi bạn xóa tài khoản của mình, sẽ không có cách nào khôi phục lại được nữa. Hãy
@@ -530,9 +530,11 @@ const AccountSettings = ({ isModalOpen, setIsModalOpen }) => {
                                         />
                                     }
                                 >
-                                    <Button primary className="bg-red-600 border-red-600" medium>
-                                        Xóa tài khoản
-                                    </Button>
+                                    <span>
+                                        <Button primary className="bg-red-600 border-red-600" medium>
+                                            Xóa tài khoản
+                                        </Button>
+                                    </span>
                                 </Popconfirm>
                             </div>
                         </div>

@@ -52,7 +52,7 @@ body {
     @apply shadow-[rgba(0,0,0,0.15)_0_3px_9px_0] opacity-85 transition-opacity;
 }
 .medium {
-    @apply px-[12px] py-2 text-base;
+    @apply px-[10px] py-1.5 text-sm;
 }
 .small {
     @apply px-[10px] py-1.5 text-xs;

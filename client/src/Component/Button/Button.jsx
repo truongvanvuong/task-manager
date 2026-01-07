@@ -37,7 +37,7 @@ const Button = ({
     };
     const classList = Object.keys(classes)
         .filter((key) => classes[key])
-        .concat(className) // Add custom className if provided
+        .concat(className)
         .join(' ');
     return (
         <button className={classList} {...props}>
