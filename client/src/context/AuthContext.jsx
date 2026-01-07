@@ -8,12 +8,8 @@ const loginUser = async (dispatch, credentials) => {
     try {
         const response = await login(credentials);
         const { token, data } = response;
-        const userData = {
-            avatarUrl: data.avatarUrl,
-            email: data.email,
-            fullname: data.fullname,
-        };
-        dispatch({ type: 'LOGIN_SUCCESS', payload: { user: userData, token: token } });
+
+        dispatch({ type: 'LOGIN_SUCCESS', payload: { user: data, token: token } });
         return response;
     } catch (err) {
         console.error('Login failed:', err);
