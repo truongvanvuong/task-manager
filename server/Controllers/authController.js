@@ -38,6 +38,7 @@ const register = async (req, res) => {
     });
   } catch (err) {
     console.log(err);
+    console.log('Lỗi tạo tài khoản');
     res.status(500).json({
       success: false,
       message: 'Lỗi tạo tài khoản, hãy thử lại',

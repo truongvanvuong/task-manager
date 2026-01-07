@@ -50,6 +50,7 @@ const Register = () => {
                     message('success', response.message);
                 }
             } catch (error) {
+                setisLoanding(false);
                 const { data } = error.response;
                 message('error', data.message);
                 console.log(error);
